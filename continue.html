@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script type="module" src="https://unpkg.com/@google/model-viewer"></script>
     <style>
-        /* Styling for the Continue Button */
+        /* Styling for Continue Button */
         #continueButton {
             position: fixed;
-            bottom: 20px;
+            bottom: 20%;
             left: 50%;
             transform: translateX(-50%);
             display: none;
@@ -21,13 +21,13 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            z-index: 1000;
+            z-index: 99999; /* Ensure it stays above everything */
         }
     </style>
 </head>
 <body>
     <div class="container text-center mt-5">
-        <h2>Product AR View continue</h2>
+        <h2>Product AR View - Continue button</h2>
 
         <!-- Product Image -->
         <img src="https://placehold.co/600x400" 
@@ -62,15 +62,22 @@
             arViewer.style.display = "block";
             arViewer.activateAR();
 
-            // Show the "Continue" button after 30 seconds
+            // Show the "Continue" button inside AR after 30 seconds
             setTimeout(() => {
                 continueButton.style.display = "block";
             }, 30000); // 30 seconds
         });
 
-        // Redirect when "Continue" button is clicked
+        // Handle "Continue" button click → Redirect to Google
         document.getElementById("continueButton").addEventListener("click", function() {
-            window.location.href = "https://softograph.com"; // Change URL if needed
+            window.location.href = "https://www.softograph.com"; // Change URL if needed
+        });
+
+        // When AR closes, hide the continue button
+        document.getElementById("arViewer").addEventListener("ar-status", (event) => {
+            if (event.detail.status === 'not-presenting') {
+                document.getElementById("continueButton").style.display = "none";
+            }
         });
     </script>
 
