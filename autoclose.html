@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product AR View</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script type="module" src="https://unpkg.com/@google/model-viewer"></script>
+</head>
+<body>
+    <div class="container text-center mt-5">
+        <h2>Product AR View</h2>
+
+        <!-- Product Image -->
+        <img src="https://placehold.co/600x400" 
+             id="productImage" alt="Product Image" 
+             class="img-fluid" style="max-width: 300px; cursor: pointer;">
+
+        <!-- AR Viewer (Initially Hidden) -->
+        <model-viewer id="arViewer"
+            src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+            ios-src="https://modelviewer.dev/shared-assets/models/Astronaut.usdz"
+            ar
+            ar-modes="webxr scene-viewer quick-look"
+            camera-controls
+            auto-rotate
+            style="display: none; width: 100%; height: 500px;">
+        </model-viewer>
+    </div>
+
+    <script>
+        document.getElementById("productImage").addEventListener("click", function() {
+            let productImage = document.getElementById("productImage");
+            let arViewer = document.getElementById("arViewer");
+
+            // Hide product image
+            productImage.style.display = "none";
+
+            // Show AR Viewer and activate AR mode
+            arViewer.style.display = "block";
+            arViewer.activateAR();
+
+            // Auto-close camera after 30 seconds
+            setTimeout(() => {
+                alert("30 seconds have passed. Closing AR Viewer.");
+                arViewer.exitAR();
+            }, 30000); // 30 seconds
+        });
+
+        // Ensure 3D model remains visible after AR closes
+        document.getElementById("arViewer").addEventListener("ar-status", (event) => {
+            if (event.detail.status === 'not-presenting') {
+                document.getElementById("arViewer").style.display = "block";
+            }
+        });
+    </script>
+
+</body>
+</html>
